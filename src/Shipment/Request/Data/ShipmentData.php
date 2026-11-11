@@ -17,7 +17,7 @@ class ShipmentData implements JsonSerializable
 		public ShipmentSetting $shipmentSetting,
 		public SenderSetting $senderSetting,
 		public RecipientSetting $recipientSetting,
-		public PickupPointSetting $pickupPointSetting,
+		public ?PickupPointSetting $pickupPointSetting,
 		public ?CODSetting $codSetting = null,
 	) {
 	}
@@ -27,7 +27,10 @@ class ShipmentData implements JsonSerializable
 		$shipmentData = $this->shipmentSetting->jsonSerialize();
 		$shipmentData['sender'] = $this->senderSetting->jsonSerialize();
 		$shipmentData['recipient'] = $this->recipientSetting->jsonSerialize();
-		$shipmentData['specificDelivery'] = $this->pickupPointSetting->jsonSerialize();
+
+		if ($this->pickupPointSetting !== null) {
+			$shipmentData['specificDelivery'] = $this->pickupPointSetting->jsonSerialize();
+		}
 
 		if ($this->codSetting !== null) {
 			$shipmentData['cashOnDelivery'] = $this->codSetting->jsonSerialize();
